@@ -51,6 +51,9 @@ var validUrl = require('valid-url');
       // Process the image
       let filteredPath = await filterImageFromURL(image_url);
       if (filteredPath && filteredPath.length != 0) {
+        // Add event listener to delete local files on completion
+        res.on('finish', () => deleteLocalFiles([filteredPath]));
+
         // Return the filtered image
         return res.status(200)
                   .sendFile(filteredPath);
