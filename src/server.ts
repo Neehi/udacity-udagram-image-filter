@@ -2,6 +2,8 @@ import express from 'express';
 import bodyParser from 'body-parser';
 import {filterImageFromURL, deleteLocalFiles} from './util/util';
 
+var validUrl = require('valid-url');
+
 (async () => {
 
   // Init the Express application
@@ -40,6 +42,12 @@ import {filterImageFromURL, deleteLocalFiles} from './util/util';
                   .send({error: "image_url is a required query parameter"});
       }
  
+      // Check `image_url` is a valid URL
+      if (!validUrl.isWebUri(image_url)) {
+        return res.status(400)
+                  .send({error: "image_url is not a valid url"});
+      }
+
       // Process the image
       let filteredPath = await filterImageFromURL(image_url);
       if (filteredPath && filteredPath.length != 0) {
