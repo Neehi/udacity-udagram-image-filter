@@ -44,7 +44,7 @@ var validUrl = require('valid-url');
  
       // Check `image_url` is a valid URL
       if (!validUrl.isWebUri(image_url)) {
-        return res.status(400)
+        return res.status(422)
                   .send({error: "image_url is not a valid url"});
       }
 
